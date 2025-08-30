@@ -1,65 +1,68 @@
-import React, { useState } from 'react'
-import { NavLink, Link } from 'react-router-dom'
-import { useStore } from '../store.jsx'
+import React, { useState } from "react"
+import { NavLink, Link } from "react-router-dom"
+import { useStore } from "../store.jsx"
 
-export default function Navbar(){
+export default function Navbar() {
   const [open, setOpen] = useState(false)
   const { cart, total } = useStore()
   const items = cart.reduce((s,i)=>s+i.qty,0)
 
   return (
-    <header className="sticky top-0 z-50 bg-pink-800 text-white shadow-lg">
-      <div className="container-max flex items-center justify-between h-16">
-        <Link to="/" className="flex items-center gap-4">
-          <img src="/logo-ethiopia-heart.svg" alt="DR Ethiopia" className="h-8 w-8"/>
+    <header className="sticky top-0 z-50 bg-pink-600 text-white border-b border-pink-500 shadow-sm">
+      <div className="mx-auto max-w-6xl px-4 flex items-center justify-between h-16">
+        <Link to="/" className="flex items-center gap-3">
+          <img src="/logo.JPG" alt="DR Ethiopia" className="h-8 w-8" />
           <div className="text-lg font-extrabold tracking-wide">DR Ethiopia</div>
         </Link>
 
-        <nav className="hidden md:flextems-center gap-2">
-          <NavItemDark to="/" end>Home</NavItemDark>
-          <NavItemDark to="/shop">Shop</NavItemDark>
-          <NavItemDark to="/checkout">Checkout</NavItemDark>
-          <NavItemDark to="/admin">Admin</NavItemDark>
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center gap-2 text-white">
+          <NavItem to="/" end>Home</NavItem>
+          <NavItem to="/shop">Shop</NavItem>
+          <NavItem to="/checkout">Checkout</NavItem>
+          <NavItem to="/admin">Admin</NavItem>
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <div className="text-sm text-white/80">
             <span>{items} items</span>
             <span className="mx-2">•</span>
             <span className="font-bold text-white">{total.toLocaleString()} ETB</span>
           </div>
           <button
-            className="md:hidden btn-ghost text-white hover:bg-white/10"
-            onClick={()=>setOpen(!open)}
-            aria-label="Toggle Menu"
+            className="md:hidden p-2 rounded-lg text-white hover:bg-white/10"
+            onClick={() => setOpen(o => !o)}
+            aria-label="Toggle menu"
+            aria-expanded={open}
           >
             ☰
           </button>
         </div>
       </div>
 
-      {open && (
-        <div className="md:hidden bg-green-950/95">
-          <div className="container-max py-2 flex flex-col gap-2">
-            <NavItemDark to="/" end onClick={()=>setOpen(false)}>Home</NavItemDark>
-            <NavItemDark to="/shop" onClick={()=>setOpen(false)}>Shop</NavItemDark>
-            <NavItemDark to="/checkout" onClick={()=>setOpen(false)}>Checkout</NavItemDark>
-            <NavItemDark to="/admin" onClick={()=>setOpen(false)}>Admin</NavItemDark>
-          </div>
+      {/* Mobile nav */}
+      <div className={`md:hidden border-t border-pink-500 bg-pink-600/95 ${open ? "block" : "hidden"}`}>
+        <div className="mx-auto max-w-6xl px-4 py-2 flex flex-col gap-1">
+          <NavItem to="/" end onClick={() => setOpen(false)}>Home</NavItem>
+          <NavItem to="/shop" onClick={() => setOpen(false)}>Shop</NavItem>
+          <NavItem to="/checkout" onClick={() => setOpen(false)}>Checkout</NavItem>
+          <NavItem to="/admin" onClick={() => setOpen(false)}>Admin</NavItem>
         </div>
-      )}
+      </div>
     </header>
   )
 }
 
-function NavItemDark({to, end, children, ...rest}){
+function NavItem({ to, children, ...rest }) {
   return (
     <NavLink
       {...rest}
       to={to}
-      end={end}
-      className={({isActive}) =>
-        `navlink-dark ${isActive ? 'navlink-dark-active' : ''}`
+      className={({ isActive }) =>
+        `px-3 py-2 rounded-lg font-medium transition-colors
+         ${isActive
+            ? "bg-pink-700 text-white"
+            : "text-white/90 hover:bg-pink-500/40 hover:text-white"}`
       }
     >
       {children}

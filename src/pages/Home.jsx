@@ -58,7 +58,7 @@ export default function Home(){
           </div>
 
           <div className="hidden md:block">
-            <img src="/logo-ethiopia-heart.svg" alt="Ring" className="mx-auto w-64 h-64" />
+            <img src="/logo.JPG" alt="Ring" className="mx-auto w-64 h-64" />
           </div>
         </div>
       </section>
